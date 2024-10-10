@@ -265,8 +265,15 @@
         <strong>DISCLAIMER:</strong> This Report of examination reflects the condition of the machine/ equipment as on date. We accept no liability / responsibility whatsoever in case of any accident / mishap on/with/ due to this machine / equipment.</p>";
 
        
-    } else {
-        echo "<h5>No data found to display.</h5>"; // Message when no data is available
-    }
+    } 
+    echo '</div>'; // .certificate-content
+    echo '<div class="certificate-footer">';
+    echo '<div class="text-center">';
+    echo '<button class="action-button" onclick="window.print()">Print Certificate</button>';
+    echo '</div>';
+    echo '</div>'; // .certificate-footer
+    echo '</div>'; // .certificate
+    echo '</div>'; // .certificate-container
+
     ?>
 </div>
