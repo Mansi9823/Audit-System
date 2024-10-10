@@ -1,0 +1,430 @@
+<!--function downloadPDF() {
+    var element = document.getElementById('certificate');
+    html2pdf().from(element).set({
+        margin: [10, 0, 10, 0], // Adjusting the margins slightly to avoid cutting
+        filename: 'Certificate_of_Completion.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true }, // Reducing the scale to prevent cutting
+        jsPDF: { unit: 'pt', format: 'a3', orientation: 'portrait' } // Using a larger format (A3)
+    }).save();
+}
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CFT Form</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .wrapper {
+            display: flex;
+            height: 100vh; /* Full viewport height */
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #343a40;
+            padding: 20px;
+            color: white;
+            box-sizing: border-box;
+        }
+
+        .sidebar h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 10px 0;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            display: block;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #575757;
+        }
+
+        .container {
+            flex: 1;
+            padding: 20px;
+            background: white;
+            margin: 20px;
+            border-radius: 8px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 60px; /* Adjusted for smaller textarea */
+        }
+
+        input[type="submit"] {
+    background-color: #343a40;
+    color: white;
+    border: none;
+    padding: 10px 50px; /* Reduced padding */
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px; /* Smaller font size */
+    transition: background-color 0.3s ease;
+    width: auto; /* Adjust width to fit the content */
+    display: block;
+    margin: 10px auto 0 auto; /* Center the button */
+}
+
+        input[type="submit"]:hover {
+            background-color: #4cae4c;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        /* Ensure form is responsive */
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+
+            .container {
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar Section -->
+        <div class="sidebar">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="dashboard.php">Home</a></li>
+                <li><a href="form.html">Form</a></li>
+                <li><a href="view.php">View All Records</a></li>
+                <!--<li><a href="audit_certificate.html">Certificate</a></li>-->
+                <li><a href="logout.php">Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content Section -->
+        <div class="container">
+            <h1>CFT Issue Form</h1>
+            <form action="store_data.php" method="post">
+                <div class="form-group">
+                    <label for="sr_no">Certificate No.</label>
+                    <input type="number" id="sr_no" name="sr_no" required maxlength="5" style="width: 100px;">
+                </div>
+                
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="issue_date">CFT Issue Date:</label>
+                        <input type="date" id="issue_date" name="issue_date" required 
+                        
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="company_name">Company Name:</label>
+                        <input type="text" id="company_name" name="company_name" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="place">PLACE (State):</label>
+                        <input type="text" id="place" name="place" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="zone">Zone:</label>
+                        <input type="text" id="zone" name="zone" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="district_address">District & Full Address:</label>
+                    <textarea id="district_address" name="district_address" required></textarea>
+                </div>
+
+              
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="crm_no">CRM No./Mode of Received Detail:</label>
+                        <input type="text" id="crm_no" name="crm_no" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="testing_date">Testing Date:</label>
+                        <input type="date" id="testing_date" name="testing_date">
+                    </div>
+                </div>
+                <label for="occupier_name">1. Name of Occupier (or Factory)</label>
+                <input type="text" id="occupier_name" name="occupier_name">
+        
+                <label for="factory_address">2. Situation and Address of Factory</label>
+                <textarea id="factory_address" name="factory_address"></textarea>
+        
+                <label for="vessel_description">3. Name, Description and Distinctive Number of Pressure Vessel</label>
+                <textarea id="vessel_description" name="vessel_description"></textarea>
+        
+                <label for="manufacturer">4. Name and Address of Manufacturer</label>
+                <textarea id="manufacturer" name="manufacturer"></textarea>
+        
+                <label for="process_nature">5. Nature of Process in which it is used</label>
+                <textarea id="process_nature" name="process_nature"></textarea>
+        
+                <h3>6. Particulars of Vessel:</h3>
+                <label for="construction_date">a) Date of Construction</label>
+                <input type="date" id="construction_date" name="construction_date">
+        
+                <label for="wall_thickness">b) Thickness of Walls</label>
+                <input type="text" id="wall_thickness" name="wall_thickness">
+        
+                <label for="first_use_date">c) Date on which the vessel was first taken into use</label>
+                <input type="date" id="first_use_date" name="first_use_date">
+        
+                <label for="safe_pressure">d) Safe Working Pressure Recommended by Manufacturer</label>
+                <input type="text" id="safe_pressure" name="safe_pressure">
+        
+                <label for="design_pressure">e) Design Pressure (If Known)</label>
+
+
+                <input type="text" id="design_pressure" name="design_pressure">
+        
+                <label for="last_test_date">7. Date of Last Hydraulic Test (if any) and Pressure Applied</label>
+                <input type="date" id="last_test_date" name="last_test_date">
+        
+                <label for="exposure">8. Is the vessel exposed to weather or damp conditions?</label>
+                <textarea id="exposure" name="exposure"></textarea>
+        
+                <label for="inaccessible_parts">9. Inaccessible Parts (if any)</label>
+                <textarea id="inaccessible_parts" name="inaccessible_parts"></textarea>
+        
+                <label for="examinations_tests">10. Examinations and Tests made</label>
+                <textarea id="examinations_tests" name="examinations_tests"></textarea>
+        
+                <label for="vessel">11.Condition of vessel </label>
+                <textarea id="vessel" name="vessel"></textarea>
+        
+                <label for="fittings">12. Are fittings and appliances in accordance with the rules?</label>
+                <textarea id="fittings" name="fittings"></textarea>
+        
+                <label for="maintenance">13. Are all fittings and appliances properly maintained?</label>
+                <textarea id="maintenance" name="maintenance"></textarea>
+        
+                <label for="repairs">14. Repairs Required</label>
+                <textarea id="repairs" name="repairs"></textarea>
+        
+                <label for="calculated_pressure">15. Safe Working Pressure calculated from thickness and other data</label>
+                <textarea id="calculated_pressure" name="calculated_pressure"></textarea>
+        
+                <label for="repair_pressure">16. Working pressure before repairs</label>
+                <textarea id="repair_pressure" name="repair_pressure"></textarea>
+                          
+        
+                <label for="observations">17. Other Observations</label>
+                <textarea id="observations" name="observations"></textarea>
+
+                <label for="distinguishing_number_description">Distinguishing number of marks and description:</label>
+    <input type="text" id="distinguishing_number_description" name="distinguishing_number_description" required>
+
+    <!-- Date when the lifting machine, chain, rope, or lifting tackle was first taken into use -->
+    <label for="use_start_date">Date When First Taken Into Use:</label>
+    <input type="date" id="use_start_date" name="use_start_date">
+    
+    
+    <!-- Date and number of the certificate relating to any test and examination made -->
+    <label for="test_certificate_date">Date and number of the certificate relating to any test and examination made:</label>
+    <input type="date" id="test_certificate_date" name="test_certificate_date" required>
+
+    <!-- Date of each periodically thorough examination made -->
+    <label for="periodic_examination_date">Date of each periodically thorough examination made:</label>
+    <input type="date" id="periodic_examination_date" name="periodic_examination_date" required>
+
+    <!-- Date of annealing or other heat treatment of chain or lifting tackle -->
+    <label for="annealing_date">Date of annealing or other heat treatment of chain or lifting tackle:</label>
+    <input type="date" id="annealing_date" name="annealing_date" required>
+
+    <!-- Particulars of any defects affecting safe working load -->
+    <label for="defects_found_description">Particulars of any defects affecting safe working load:</label>
+    <textarea type="text" id="defects_found_description" name="defects_found_description"  required></textarea>
+
+    <div class="form-group">
+        <label for="size">Size:</label>
+        <input type="text" id="size" name="size" required>
+    </div>
+    <div class="form-group">
+        <label for="serial_number">Sr. No.:</label>
+        <input type="text" id="serial_number" name="serial_number" required>
+    </div>
+    <div class="form-group">
+        <label for="mfg_first_use">Mfg./First Use:</label>
+        <input type="text" id="mfg_first_use" name="mfg_first_use" required>
+    </div>
+    <div class="form-group">
+        <label for="service_used_for">Service Used For:</label>
+        <input type="text" id="service_used_for" name="service_used_for" required>
+    </div>
+    <div class="form-group">
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" required>
+    </div>
+    <div class="form-group">
+        <label for="pressure_opening">Pressure - Opening:</label>
+        <input type="text" id="pressure_opening" name="pressure_opening" required>
+    </div>
+    <div class="form-group">
+        <label for="pressure_closing">Pressure - Closing:</label>
+        <input type="text" id="pressure_closing" name="pressure_closing" required>
+    </div>
+    <div class="form-group">
+        <label for="remark">Remark:</label>
+        <textarea id="remark" name="remark"></textarea>
+    </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="prepared_by">Prepared By:</label>
+                        <input type="text" id="prepared_by" name="prepared_by" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tested_by">Tested By:</label>
+                        <input type="text" id="tested_by" name="tested_by">
+                    </div>
+                </div>
+
+                
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cft_no">Condition of vessel</label>
+                        <input type="text" id="cft_no" name="cft_no">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="frequency">Frequency (In Months):</label>
+                        <input type="number" id="frequency" name="frequency" required oninput="calculateDueDate()">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="due_date">Due Date:</label>
+                        <input type="date" id="due_date" name="due_date" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="print_date">Print Date:</label>
+                        <input type="date" id="print_date" name="print_date" required maxlength="7" style="width: 120px;">
+                    </div>
+                </div>
+                <div class="form-row">
+                    
+                    <div class="form-group col-md-6">
+                        <label for="equipment">Equipment:</label>
+                        <select id="equipment" name="equipment" class="form-control">
+                            <option value="Pv-SRV">Pv-SRV</option>
+                            <option value="Bulker"> Bulker</option>
+                            <option value="Pv-LE">Pv-LE</option>
+                        </select>
+                    </div>
+                                    
+                    
+                </div>
+                
+                <input type="submit" value="Submit" class="submit-button">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function calculateDueDate() {
+            const frequency = document.getElementById("frequency").value;
+            const dueDateInput = document.getElementById("due_date");
+
+            // Get the current date
+            const currentDate = new Date();
+            // Calculate the new due date
+            currentDate.setMonth(currentDate.getMonth() + parseInt(frequency));
+
+            // Format the date to YYYY-MM-DD for the input
+            const year = currentDate.getFullYear();
+            const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+            const day = String(currentDate.getDate()).padStart(2, '0');
+
+            // Set the calculated due date in the input
+            dueDateInput.value = `${year}-${month}-${day}`;
+        }
+    </script>
+</body>
+</html>
